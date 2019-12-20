@@ -7,17 +7,21 @@ connexion_avec_serveur = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 connexion_avec_serveur.connect((hote, port))
 print("Connexion établie avec le serveur sur le port {}".format(port))
 
-msg_a_envoyer = b""
-Valeur1 = float(input())
-Valeur2 = float(input())
-while msg_a_envoyer != b"fin":
-    msg_a_envoyer = input("> ")
-    # Peut planter si vous tapez des caractères spéciaux
-    msg_a_envoyer = msg_a_envoyer.encode()
-    # On envoie le message
-    connexion_avec_serveur.send(msg_a_envoyer)
-    msg_recu = connexion_avec_serveur.recv(1024)
-    print(msg_recu.decode()) # Là encore, peut planter s'il y a des accents
+
+Valeur1 = input()
+Valeur2 = input()
+Signe = input()
+
+Valeur1 = Valeur1.encode()
+Valeur2 = Valeur2.encode()
+Signe = Signe.encode()
+
+connexion_avec_serveur.send(Valeur1)
+connexion_avec_serveur.send(Valeur2)
+connexion_avec_serveur.send(Signe)
+
+result = connexion_avec_serveur.recv(1024).decode()
+print(result)
 
 print("Fermeture de la connexion")
 connexion_avec_serveur.close()
